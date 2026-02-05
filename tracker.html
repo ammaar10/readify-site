@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readify - Tracker</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header></header>
+
+    <main class="container">
+        <h1>Reading Progress Tracker</h1>
+
+        <div class="tracker-wrapper">
+            <form id="tracker-form">
+                <label>Total Pages in Book:</label>
+                <input type="number" id="total-pages" required min="1">
+
+                <label>Pages Read So Far:</label>
+                <input type="number" id="pages-read" required min="0">
+
+                <label>Average Reading Speed (pages per day):</label>
+                <input type="number" id="reading-speed" required min="1">
+
+                <button type="submit" class="btn-primary">Calculate Progress</button>
+            </form>
+
+            <div id="tracker-results" class="results-box" style="display:none;">
+                <h2>Progress: <span id="percentage-display">0%</span></h2>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar-fill" style="width: 0%"></div>
+                </div>
+                <p>Estimated days to finish: <span id="days-left">0</span> days</p>
+                <button id="save-progress-btn">Save Progress</button>
+            </div>
+        </div>
+    </main>
+
+    <footer></footer>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // TRACKER LOGIC
+        const form = document.getElementById('tracker-form');
+        const resultsBox = document.getElementById('tracker-results');
+
+        // 1. Check for saved data on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedData = JSON.parse(localStorage.getItem('readifyProgress'));
+            if (savedData) {
+                document.getElementById('total-pages').value = savedData.total;
+                document.getElementById('pages-read').value = savedData.read;
+                document.getElementById('reading-speed').value = savedData.speed;
+
+                calculateProgress(savedData.total, savedData.read, savedData.speed);
+            }
+        });
+
+        // 2. Handle Calculation
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const total = parseInt(document.getElementById('total-pages').value);
+            const read = parseInt(document.getElementById('pages-read').value);
+            const speed = parseInt(document.getElementById('reading-speed').value);
+
+            if (read > total) {
+                alert("You can't read more pages than the book has!");
+                return;
+            }
+
+            calculateProgress(total, read, speed);
+        });
+
+        function calculateProgress(total, read, speed) {
+            // math
+            const percentage = Math.floor((read / total) * 100);
+            const pagesLeft = total - read;
+            const daysLeft = Math.ceil(pagesLeft / speed);
+
+            // updating ui
+            document.getElementById('percentage-display').innerText = `${percentage}%`;
+            document.getElementById('progress-bar-fill').style.width = `${percentage}%`;
+            document.getElementById('days-left').innerText = daysLeft;
+
+            resultsBox.style.display = 'block';
+        }
+
+        // saving to localstorage
+        document.getElementById('save-progress-btn').addEventListener('click', () => {
+            const data = {
+                total: document.getElementById('total-pages').value,
+                read: document.getElementById('pages-read').value,
+                speed: document.getElementById('reading-speed').value
+            };
+            localStorage.setItem('readifyProgress', JSON.stringify(data));
+            alert('Progress saved! We will remember this next time.');
+        });
+    </script>
+</body>
+
+</html>

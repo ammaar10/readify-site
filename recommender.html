@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readify - Recommender</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header></header>
+    <main class="container">
+        <h1>Find Your Next Read</h1>
+
+        <div class="recommender-controls">
+            <label>I want a book about:</label>
+            <select id="rec-genre">
+                <option value="any">Any Genre</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Self-Help">Self-Help</option>
+                <option value="Education">Education</option>
+            </select>
+
+            <label>That is:</label>
+            <select id="rec-length">
+                <option value="any">Any Length</option>
+                <option value="Short">Short (< 200 pages)</option>
+                <option value="Medium">Medium (200-500 pages)</option>
+                <option value="Long">Long (500+ pages)</option>
+            </select>
+
+            <button id="get-recommendation" class="btn-primary" style="margin-top: 20px;">Pick for Me!</button>
+        </div>
+
+        <div id="recommendation-result" class="card"
+            style="display:none; margin-top: 30px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        </div>
+    </main>
+
+    <footer></footer>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // logic
+        document.getElementById('get-recommendation').addEventListener('click', () => {
+            const genre = document.getElementById('rec-genre').value;
+            const length = document.getElementById('rec-length').value;
+            const resultBox = document.getElementById('recommendation-result');
+
+            // filter the booksdata array
+            const validBooks = booksData.filter(book => {
+                const matchGenre = genre === 'any' || book.genre === genre;
+                const matchLength = length === 'any' || book.length === length;
+                return matchGenre && matchLength;
+            });
+
+            // pick random one
+            if (validBooks.length > 0) {
+                const randomIndex = Math.floor(Math.random() * validBooks.length);
+                const book = validBooks[randomIndex];
+
+                // display it 
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = `
+                    <div style="text-align: center;">
+                        <h3 style="color: #555;">We recommend:</h3>
+                        <img src="${book.cover}" alt="${book.title}" style="height:220px; margin:20px auto; display:block; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                        <h2 style="color: var(--primary-color); margin-bottom: 5px; font-family: 'Playfair Display', serif;">${book.title}</h2>
+                        <p style="font-weight: 500; margin-bottom: 20px;">by ${book.author}</p>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                    <div style="text-align: justify; line-height: 1.8; color: #444;">
+                        <p>${book.synopsis}</p>
+                    </div>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <span style="background: #eee; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">${book.genre}</span>
+                        <span style="background: #eee; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem; margin-left: 10px;">${book.pages} pages</span>
+                    </div>
+                `;
+            } else {
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = `<p style="text-align:center; padding: 20px;">Sorry, no books match those exact criteria. Try selecting 'Any' to see more options!</p>`;
+            }
+        });
+    </script>
+</body>
+
+</html>

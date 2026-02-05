@@ -3,11 +3,119 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Readify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readify - Home</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-    <h1>Readify Setup Complete</h1>
+
+    <header></header>
+    <main>
+        <section class="section-standard hero-section-wrapper">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Discover Your Next Adventure</h1>
+                    <div id="quote-container">
+                        <p id="quote-text">"So many books, so little time."</p>
+                        <span id="quote-author">- Frank Zappa</span>
+                    </div>
+                    <br>
+                    <a href="explorer.html"><button class="btn-primary">Browse Books</button></a>
+                </div>
+                <div class="hero-image">
+                    <img src="assets/images/dune.jpg" alt="Featured Book">
+                </div>
+            </div>
+        </section>
+
+        <section class="section-alt">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 30px;">Why Readify?</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; text-align: center;">
+                    <div
+                        style="flex: 1; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h3 style="margin-bottom: 10px;">📊 Track</h3>
+                        <p>Log your reading speed and pages.</p>
+                    </div>
+                    <div
+                        style="flex: 1; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h3 style="margin-bottom: 10px;">🎧 Focus</h3>
+                        <p>Read with rain or cafe sounds.</p>
+                    </div>
+                    <div
+                        style="flex: 1; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <h3 style="margin-bottom: 10px;">🎲 Discover</h3>
+                        <p>Let us pick your next book.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-standard">
+            <div class="container featured-author">
+                <h2>Author of the Day</h2>
+                <div id="author-card" class="card" style="margin-top: 20px;">
+                    <h3 id="author-name">Loading...</h3>
+                    <p>Discover their best works in our Explorer.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-alt">
+            <div class="container">
+                <h2>Trending Now</h2>
+                <p style="margin-bottom: 20px;">Community favorites this week.</p>
+                <div style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px;">
+                    <a href="explorer.html"><img src="assets/images/atomic.jpg"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
+                    <a href="explorer.html"><img src="assets/images/1984.jpg"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
+                    <a href="explorer.html"><img src="assets/images/clean-code.jpg"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
+                    <a href="explorer.html"><img src="assets/images/hobbit.jpg"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer></footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Quote Logic
+        const quotes = [
+            { text: "So many books, so little time.", author: "Frank Zappa" },
+            { text: "A room without books is like a body without a soul.", author: "Cicero" },
+            { text: "The only thing that you absolutely have to know, is the location of the library.", author: "Albert Einstein" }
+        ];
+
+        let currentQuoteIndex = 0;
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+
+        setInterval(() => {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            quoteText.innerText = `"${quotes[currentQuoteIndex].text}"`;
+            quoteAuthor.innerText = `- ${quotes[currentQuoteIndex].author}`;
+        }, 5000);
+
+        // Author Logic
+        const today = new Date().getDate();
+        const dailyIndex = today % booksData.length;
+        const dailyAuthor = booksData[dailyIndex].author;
+        document.getElementById('author-name').innerText = dailyAuthor;
+    </script>
 </body>
 
 </html>

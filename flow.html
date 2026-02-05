@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readify - Flow Mode</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header></header>
+
+    <main class="container">
+        <h1>Reading Flow</h1>
+        <p>Select an ambience to focus on your reading.</p>
+
+        <div class="sound-board">
+            <button class="sound-btn" data-sound="rain">🌧️ Rain</button>
+            <button class="sound-btn" data-sound="fire">🔥 Fireplace</button>
+            <button class="sound-btn" data-sound="cafe">☕ Cafe</button>
+        </div>
+
+        <div class="reading-timer">
+            <h2>Session Timer</h2>
+            <p>You have been reading for: <span id="timer">00:00</span></p>
+            <button id="toggle-timer">Start Timer</button>
+        </div>
+    </main>
+
+    <footer></footer>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // logic
+
+        // sound board
+        const buttons = document.querySelectorAll('.sound-btn');
+        let currentAudio = null;
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const soundName = btn.getAttribute('data-sound');
+                const audioPath = `assets/audio/${soundName}.mp3`;
+
+                // if clicking the same button, toggle pause/play
+                if (currentAudio && currentAudio.src.includes(audioPath)) {
+                    if (currentAudio.paused) {
+                        currentAudio.play();
+                        btn.style.background = '#d35400'; // active color
+                    } else {
+                        currentAudio.pause();
+                        btn.style.background = '#e67e22'; // reset color
+                    }
+                    return; // exit function
+                }
+
+                // if clicking a new button, stop old sound
+                if (currentAudio) {
+                    currentAudio.pause();
+                    // reset all buttons visual state
+                    buttons.forEach(b => b.style.background = '#e67e22');
+                }
+
+                // play new sound
+                currentAudio = new Audio(audioPath);
+                currentAudio.loop = true; // loop forever
+                currentAudio.play();
+                btn.style.background = '#d35400'; // active color
+            });
+        });
+
+        // 2. reading Timer
+        let seconds = 0;
+        let timerInterval = null;
+        const timerDisplay = document.getElementById('timer');
+        const timerBtn = document.getElementById('toggle-timer');
+
+        timerBtn.addEventListener('click', () => {
+            if (timerInterval) {
+                // stop
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timerBtn.innerText = "Resume Timer";
+            } else {
+                // start
+                timerBtn.innerText = "Pause Timer";
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    // add leading zero if less than 10
+                    timerDisplay.innerText =
+                        `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>
