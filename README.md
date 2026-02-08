@@ -49,7 +49,6 @@ https://ammaar10.github.io/readify-site/
 ---
 
 ## 👤 Author
-**Name: Ammaar Nawaz**
-**Student ID: CB016902**
-
+**Name:** [Your Name]  
+**Student ID:** [Your ID]  
 **Module:** COMP40053 - Web Development
