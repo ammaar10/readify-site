@@ -13,6 +13,10 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/jpeg" href="assets/images/dune.jpg">
+    <meta name="theme-color" content="#1a1a2e">
 </head>
 
 <body>
@@ -52,45 +56,63 @@
     <script src="assets/js/main.js"></script>
 
     <script>
-        // logic
+        // RECOMMENDER LOGIC
+        let currentBook = null; // Variable to store the suggested book
+
         document.getElementById('get-recommendation').addEventListener('click', () => {
             const genre = document.getElementById('rec-genre').value;
             const length = document.getElementById('rec-length').value;
             const resultBox = document.getElementById('recommendation-result');
 
-            // filter the booksdata array
+            // 1. Filter the booksData array
             const validBooks = booksData.filter(book => {
                 const matchGenre = genre === 'any' || book.genre === genre;
                 const matchLength = length === 'any' || book.length === length;
                 return matchGenre && matchLength;
             });
 
-            // pick random one
+            // 2. Pick a random one
             if (validBooks.length > 0) {
                 const randomIndex = Math.floor(Math.random() * validBooks.length);
-                const book = validBooks[randomIndex];
+                currentBook = validBooks[randomIndex]; // Save to global variable
 
-                // display it 
+                // 3. Display it (With SAVE Button)
                 resultBox.style.display = 'block';
                 resultBox.innerHTML = `
                     <div style="text-align: center;">
                         <h3 style="color: #555;">We recommend:</h3>
-                        <img src="${book.cover}" alt="${book.title}" style="height:220px; margin:20px auto; display:block; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                        <h2 style="color: var(--primary-color); margin-bottom: 5px; font-family: 'Playfair Display', serif;">${book.title}</h2>
-                        <p style="font-weight: 500; margin-bottom: 20px;">by ${book.author}</p>
+                        <img src="${currentBook.cover}" alt="${currentBook.title}" style="height:220px; margin:20px auto; display:block; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                        <h2 style="color: var(--primary-color); margin-bottom: 5px; font-family: 'Playfair Display', serif;">${currentBook.title}</h2>
+                        <p style="font-weight: 500; margin-bottom: 20px;">by ${currentBook.author}</p>
+                        
+                        <button id="save-rec-btn" class="btn-primary" style="background-color: #27ae60; border-radius: 20px; padding: 10px 20px; margin-bottom: 20px;">
+                            ❤️ Save to Reading List
+                        </button>
                     </div>
                     <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
                     <div style="text-align: justify; line-height: 1.8; color: #444;">
-                        <p>${book.synopsis}</p>
-                    </div>
-                    <div style="margin-top: 20px; text-align: center;">
-                        <span style="background: #eee; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">${book.genre}</span>
-                        <span style="background: #eee; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem; margin-left: 10px;">${book.pages} pages</span>
+                        <p>${currentBook.synopsis}</p>
                     </div>
                 `;
+
+                // 4. Activate the Save Button
+                document.getElementById('save-rec-btn').addEventListener('click', () => {
+                    // Get existing list or create empty one
+                    let list = JSON.parse(localStorage.getItem('readingList')) || [];
+
+                    // Prevent duplicates
+                    if (!list.includes(currentBook.title)) {
+                        list.push(currentBook.title);
+                        localStorage.setItem('readingList', JSON.stringify(list));
+                        alert(`"${currentBook.title}" has been saved to your Reading List!`);
+                    } else {
+                        alert("You already have this book in your list!");
+                    }
+                });
+
             } else {
                 resultBox.style.display = 'block';
-                resultBox.innerHTML = `<p style="text-align:center; padding: 20px;">Sorry, no books match those exact criteria. Try selecting 'Any' to see more options!</p>`;
+                resultBox.innerHTML = `<p style="text-align:center; padding: 20px;">Sorry, no books match those exact criteria. Try selecting 'Any'!</p>`;
             }
         });
     </script>
