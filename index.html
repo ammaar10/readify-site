@@ -12,11 +12,20 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/style.css">
-
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/jpeg" href="assets/images/dune.jpg">
     <meta name="theme-color" content="#1a1a2e">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        /* Ensures the link looks exactly like the button */
+        a.btn-primary {
+            display: inline-block;
+            text-decoration: none;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,10 +41,10 @@
                         <span id="quote-author">- Frank Zappa</span>
                     </div>
                     <br>
-                    <a href="explorer.html"><button class="btn-primary">Browse Books</button></a>
+                    <a href="explorer.html" class="btn-primary">Browse Books</a>
                 </div>
                 <div class="hero-image">
-                    <img src="assets/images/dune.jpg" alt="Featured Book">
+                    <img src="assets/images/dune.jpg" alt="Featured Book: Dune">
                 </div>
             </div>
         </section>
@@ -78,14 +87,22 @@
                 <h2>Trending Now</h2>
                 <p style="margin-bottom: 20px;">Community favorites this week.</p>
                 <div style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px;">
-                    <a href="explorer.html"><img src="assets/images/atomic.jpg"
-                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
-                    <a href="explorer.html"><img src="assets/images/1984.jpg"
-                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
-                    <a href="explorer.html"><img src="assets/images/clean-code.jpg"
-                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
-                    <a href="explorer.html"><img src="assets/images/hobbit.jpg"
-                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);"></a>
+                    <a href="explorer.html">
+                        <img src="assets/images/atomic.jpg" alt="Atomic Habits Book Cover"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);">
+                    </a>
+                    <a href="explorer.html">
+                        <img src="assets/images/1984.jpg" alt="1984 Book Cover"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);">
+                    </a>
+                    <a href="explorer.html">
+                        <img src="assets/images/clean-code.jpg" alt="Clean Code Book Cover"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);">
+                    </a>
+                    <a href="explorer.html">
+                        <img src="assets/images/hobbit.jpg" alt="The Hobbit Book Cover"
+                            style="height: 180px; border-radius: 5px; box-shadow: 0 3px 6px rgba(0,0,0,0.2);">
+                    </a>
                 </div>
             </div>
         </section>
@@ -118,8 +135,4 @@
         const today = new Date().getDate();
         const dailyIndex = today % booksData.length;
         const dailyAuthor = booksData[dailyIndex].author;
-        document.getElementById('author-name').innerText = dailyAuthor;
-    </script>
-</body>
-
-</html>
+        document.getElementById('author-name').innerText =
