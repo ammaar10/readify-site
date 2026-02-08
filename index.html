@@ -24,6 +24,7 @@
             display: inline-block;
             text-decoration: none;
             line-height: 1.5;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -135,4 +136,8 @@
         const today = new Date().getDate();
         const dailyIndex = today % booksData.length;
         const dailyAuthor = booksData[dailyIndex].author;
-        document.getElementById('author-name').innerText =
+        document.getElementById('author-name').innerText = dailyAuthor;
+    </script>
+</body>
+
+</html>
